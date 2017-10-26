@@ -1,0 +1,59 @@
+<!DOCTYPE html> 
+<header> <title> Grade Calculator</title>
+ <link rel="stylesheet" type="text/css" href="C:\Users\Me\Desktop\logicsite\logic.css">
+</header>
+
+<div class="container">
+<div class="banner"> 
+<h1> Introduction to Logic</h1>
+<ul>
+<li> <a href="">Home </a></li>  
+<li> <a href="">Syllabus </a></li> 
+<li> <a href="">Schedule </a></li> 
+<li> <a href="">Unit 1</a></li> 
+<li> <a href="">Unit 2 </a></li> 
+<li> <a href="">Unit 3 </a></li> 
+<li> <a href="">Unit 4 </a></li> 
+</ul> 
+
+	</div> 
+	
+<div class="wrapper"> 
+
+<h2> Grade Calculator</h2> 
+
+<p>To get an estimation of a hypothetical grade, input scores for the following items: </p>
+
+Test 1 <input id="test1"> </br>
+Test 2 <input id="test2"></br>
+Test 3 <input id="test3"></br>
+Test 4 <input id="test4"></br>
+Homework <input id="homework">
+
+<button type="button" onclick="myFunction()">Submit</button>
+
+<p> With these scores your grade would be the following:</p> 
+<p id="grade"></p>
+
+<script>
+function myFunction() {
+
+   //get test scores and homework as integers
+    var x = parseInt(document.getElementById("test1").value,10);
+    var y = parseInt(document.getElementById("test2").value,10);
+    var z = parseInt(document.getElementById("test3").value,10);
+    var w = parseInt(document.getElementById("test4").value,10);
+    var h = parseInt(document.getElementById("homework").value,10);
+
+   
+    //write the calculation in the "grade" paragraph.
+    document.getElementById("grade").innerHTML = .88*((x+y+z+w)/4)+.12*h;
+}
+</script>
+
+
+
+
+</br> </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
+
+</body></html> 
