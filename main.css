@@ -8,11 +8,12 @@ body { background: -webkit-linear-gradient(black, red); /* Safari 5.1-6.0 */
 
 }
 
-.container {background-color:blue; width:84%; margin:auto; margin-top:0;
+.container {background-color:blue; width:84%; margin:auto; margin-top:0; z-index:+3;
 }
 
 .wrapper {margin-top:120px; background-color: white; z-index: -1;
 }
+.wrapper h2 {text-align: center;}
 
 .banner {display: inline; position: fixed; top: 0; left:7.99%; background-color: white; width:84.05%; height: 120px;
 	
@@ -48,5 +49,10 @@ body { background: -webkit-linear-gradient(black, red); /* Safari 5.1-6.0 */
 }
 
 .due { width:34%; display:inline-block; vertical-align: top;
+	
+}
+
+
+.schedule {width:80%; margin:auto;
 	
 }
