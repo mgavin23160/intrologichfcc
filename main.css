@@ -25,7 +25,7 @@ body { background: -webkit-linear-gradient(black, red); /* Safari 5.1-6.0 */
 #grade {text-indent: 20px;
 }
 
-.sidebar {position:fixed; top:114px; right:9%;background-color: white; border:solid black 3px;
+.sidebar {position:fixed; top:114px; right:9%;background-color: white; border:solid black 2px; padding:4px;
 	
 }
 
