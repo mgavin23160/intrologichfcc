@@ -11,7 +11,7 @@ body { background: -webkit-linear-gradient(black, red); /* Safari 5.1-6.0 */
 .container {background-color:blue; width:84%; margin:auto; margin-top:0; z-index:+3;
 }
 
-.wrapper {margin-top:120px; background-color: white; z-index: -1;
+.wrapper {margin-top:120px; background-color: white; z-index: -1; padding: 20px;
 }
 .wrapper h2 {text-align: center;}
 
@@ -19,9 +19,9 @@ body { background: -webkit-linear-gradient(black, red); /* Safari 5.1-6.0 */
 	
 }
 
-.banner ul {list-style-type: none;
-}
-.banner ul li {display: inline;margin: 3em;font-size:14px;}
+	.banner ul {list-style-type: none;
+	}
+	.banner ul li {display: inline;margin: 3em;font-size:14px;}
 
 #grade {text-indent: 20px;
 }
@@ -30,13 +30,13 @@ body { background: -webkit-linear-gradient(black, red); /* Safari 5.1-6.0 */
 	
 }
 
-.sidebar ul {list-style-type: none; indent:none; padding:10px;
-	
-}
+	.sidebar ul {list-style-type: none; indent:none; padding:10px;
+		
+	}
 
-.sidebar h3 { text-align:center;
-	
-}
+	.sidebar h3 { text-align:center;
+		
+	}
 
 
 
@@ -53,6 +53,11 @@ body { background: -webkit-linear-gradient(black, red); /* Safari 5.1-6.0 */
 }
 
 
-.schedule {width:80%; margin:auto;
+.schedule {width: 85%; margin:auto;
+	}
 	
-}
+.schedule tr:nth-child(even){background-color: #CCC;
+	}
+	
+	
+	
