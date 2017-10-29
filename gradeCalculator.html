@@ -11,7 +11,7 @@
 <ul> 
 <li> <a href="index">Home </a></li> 
 <li> <a href="attachments/syllabus.docx">Syllabus </a></li> 
-<li> <a href="">Schedule </a></li> 
+<li> <a href="schedule">Schedule </a></li> 
 <li> <a href="unit1">Unit 1</a></li> 
 <li> <a href="unit2">Unit 2 </a></li> 
 <li> <a href="unit3">Unit 3 </a></li> 
@@ -42,15 +42,20 @@ Homework <input id="homework">
 function myFunction() {
 
    //get test scores and homework as integers
-    var x = parseInt(document.getElementById("test1").value,10);
-    var y = parseInt(document.getElementById("test2").value,10);
-    var z = parseInt(document.getElementById("test3").value,10);
-    var w = parseInt(document.getElementById("test4").value,10);
+    var t1 = document.getElementById("test1").value;
+    var t2 = parseInt(document.getElementById("test2").value,10);
+    var t3 = parseInt(document.getElementById("test3").value,10);
+    var t4 = parseInt(document.getElementById("test4").value,10);
     var h = parseInt(document.getElementById("homework").value,10);
 
    
     //write the calculation in the "grade" paragraph.
-    document.getElementById("grade").innerHTML = .88*((x+y+z+w)/4)+.12*h;
+    //document.getElementById("grade").innerHTML = .88*((t1+t2+t3+t4)/4)+.12*h;
+	
+	if(t1=="") {
+	document.getElementById("grade").innerHTML="you didn't fill it in";
+	}
+	
 }
 </script>
 
