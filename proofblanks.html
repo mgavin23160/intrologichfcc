@@ -116,7 +116,7 @@
 		<li> <ol>
 					<li> A -> B </li> 
 					<li> A </li> 
-					<li> <input id="b5">&nbsp; 1,2, DS </li>  
+					<li> <input id="b5">&nbsp; 1,2, MP </li>  
 					<button type="button" onclick="checkproof5()">Submit</button>
 
 					<p id="response5"></p> 
@@ -130,7 +130,109 @@
 								}
 							</script>
 
-		</ol></li><li> <ol>
+		</ol></li>
+		
+		<li> <ol>
+					<li> A -> (B . C) </li> 
+					<li> A </li> 
+					<li> <input id="bandc6">&nbsp; 1,2, MP </li>  
+					<button type="button" onclick="checkproof6()">Submit</button>
+
+					<p id="response6"></p> 
+							<script>
+								function checkproof6(){
+									var x=document.getElementById("bandc6").value;
+									
+									
+									if(x=="B . C") {document.getElementById("response6").innerHTML="Good job!"} else 
+										{document.getElementById("response6").innerHTML="Sorry, that's not right."} 
+								}
+							</script>
+
+		</ol></li>
+		
+		
+		
+		<li> <ol>
+					<li> (A . B) -> C </li> 
+					<li> (A . B)</li> 
+					<li> <input id="c7">&nbsp; 1,2, MP </li>  
+					<button type="button" onclick="checkproof7()">Submit</button>
+
+					<p id="response7"></p> 
+							<script>
+								function checkproof7(){
+									var x=document.getElementById("c7").value;
+									
+									
+									if(x=="C") {document.getElementById("response7").innerHTML="Good job!"} else 
+										{document.getElementById("response7").innerHTML="Sorry, that's not right."} 
+								}
+							</script>
+
+		</ol></li>
+		
+		<!-- 8 -->
+		<li> <ol>
+					<li> A -> (B . C) </li> 
+					<li> ~ (B . C)</li> 
+					<li> <input id="notA8">&nbsp; 1,2, MT </li>  
+					<button type="button" onclick="checkproof8()">Submit</button>
+
+					<p id="response8"></p> 
+							<script>
+								function checkproof8(){
+									var x=document.getElementById("c7").value;
+									
+									
+									if(x=="~ A") {document.getElementById("response8").innerHTML="Good job!"} else 
+										{document.getElementById("response8").innerHTML="Sorry, that's not right."} 
+								}
+							</script>
+
+		</ol></li>
+		
+		<li> <ol>
+					<li> (A -> B) . (C -> D) </li> 
+					<li> A v C </li> 
+					<li> <input id="BorD9">&nbsp; 1,2, CD </li>  
+					<button type="button" onclick="checkproof9()">Submit</button>
+
+					<p id="response9"></p> 
+							<script>
+								function checkproof9(){
+									var x=document.getElementById("BorD9").value;
+									
+									
+									if(x=="B v D") {document.getElementById("response9").innerHTML="Good job!"} else 
+										{document.getElementById("response9").innerHTML="Sorry, that's not right."} 
+								}
+							</script>
+
+		</ol></li>
+		
+		<li> <ol>
+					<li> [(A . B) -> C] . [D -> (E . F)] </li> 
+					<li> (A . B) v D</li> 
+					<li> <input id="ans10">&nbsp; 1,2, CD </li>  
+					<button type="button" onclick="checkproof10()">Submit</button>
+
+					<p id="response10"></p> 
+							<script>
+								function checkproof10(){
+									var x=document.getElementById("ans10").value;
+									
+									
+									if(x=="C v (E . F)") {document.getElementById("response10").innerHTML="Good job!"} else 
+										{document.getElementById("response10").innerHTML="Sorry, that's not right."} 
+								}
+							</script>
+
+		</ol></li>
+		
+		
+		
+		<li> <ol>
 					<li> (A . B) v (B -> C) </li> 
 					<li> B . ~ C </li> 
 					<li> ~~B . ~ C &nbsp; 2, <input id="dn"></li> 

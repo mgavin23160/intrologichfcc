@@ -25,7 +25,7 @@
 
 <h2> Grade Calculator</h2> 
 
-<p>Enter your scores to get your grade, or enter hypothetical scores to get the corrseponding grade. You can leave the entries blank for the tests you haven't taken yet, but you must enter a grade for homework. If you aren't sure what your homework grade is, then estimate. </p>
+<p>Enter your scores to get an estimate of your grade, or enter hypothetical scores to get the corrseponding grade. You can leave the entries blank for the tests you haven't taken yet, but you must enter a grade for homework. If you aren't sure what your homework grade is, then estimate. Bear in mind, your actual grade may be different if you have incorrect values, and scores may be rounded differently in my actual gradebook. </p>
 
 Test 1 <input id="test1"> </br>
 Test 2 <input id="test2"></br>
@@ -46,17 +46,10 @@ function myFunction() {
     var t3 = document.getElementById("test3").value;
     var t4 = document.getElementById("test4").value;
     var h = document.getElementById("homework").value;
-	var denom = 0;
+
 	
 	
-	//write the result of the calculation in the "grade" paragraph.
-    //document.getElementById("grade").innerHTML = .88*((t1+t2+t3+t4)/4)+.12*h;
-	
-	/*if(t1==""){var n1=0} else {var n1=0} else {var n1=parseInt(t1,10)};
-	if(t2==""){var n2=0} else {var n2=1};
-	if(t3==""){var n3=0} else {var n3=1};
-	if(t4==""){var n4=0} else {var n4=1};*/
-	
+	// Decide the corresponding numerator and denominator terms
 	if(t1==""){var d1=0; var n1=0;} else {var d1=1; var n1=parseInt(t1,10);};
 	if(t2==""){var d2=0; var n2=0;} else {var d2=1; var n2=parseInt(t2,10);};
 	if(t3==""){var d3=0; var n3=0;} else {var d3=1; var n3=parseInt(t3,10);};
