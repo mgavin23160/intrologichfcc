@@ -29,7 +29,13 @@
 <div class="wrapper"> 
 <h2> Practice with Inference Rules</h2> 
 
-<p> Fill in the blanks. Click "Submit" to see if your answer is correct. To get it right, you have to type your answer in the following format: (i)exclude parentheses that would surround the entire sentence; (ii) put a space between a binary operator and the sentences it connects; and (iii) put a space between a tilde and any sentence on its right (including one that also starts with a tilde.</p> 
+<p> Fill in the blanks. Click "Submit" to see if your answer is correct. To get it right, you have to type your answer in the correct format. Use capital letters, not lowercase. Exclude parentheses that would surround the entire sentence. Put a space between a binary operator and the sentences it connects. Put a space between a tilde and any sentence on its right, even one that also starts with a tilde. Don't add any spaces before or after the entire sentence. Use the following symbols in place of those your keyboard doesn't have:</p> 
+<ul> 
+	<li> For dot, use a regular period. </li> 
+	<li> For wedge, use a lowercase v. </li> 
+	<li> For horseshoe, use "->". (That's a dash followed by a right corner bracket.)</li> 
+	<li> For triple bar, use "<->". (That's a left corner bracket, a dash, and then a right corner bracket.</li> 
+</ul> 
 <ol> 
 		<li> <ol>
 		<li> A v B </li> 
@@ -108,6 +114,23 @@
 		</ol></li>
 		
 		<li> <ol>
+					<li> A -> B </li> 
+					<li> A </li> 
+					<li> <input id="b5">&nbsp; 1,2, DS </li>  
+					<button type="button" onclick="checkproof5()">Submit</button>
+
+					<p id="response5"></p> 
+							<script>
+								function checkproof5(){
+									var x=document.getElementById("b5").value;
+									
+									
+									if(x=="B") {document.getElementById("response5").innerHTML="Good job!"} else 
+										{document.getElementById("response5").innerHTML="Sorry, that's not right."} 
+								}
+							</script>
+
+		</ol></li><li> <ol>
 					<li> (A . B) v (B -> C) </li> 
 					<li> B . ~ C </li> 
 					<li> ~~B . ~ C &nbsp; 2, <input id="dn"></li> 
