@@ -2,6 +2,12 @@
 <!DOCTYPE html> 
 <header> <title> Proofs </title>
  <link rel="stylesheet" type="text/css" href="main.css">
+ <style> 
+ .exercises {-moz-column-count: 2; -webkit-column-count: 2; column-count: 2;}
+ 
+ </style>
+ 
+ 
 </header>
 
 <body> 
@@ -36,6 +42,10 @@
 	<li> For horseshoe, use "->". (That's a dash followed by a right corner bracket.)</li> 
 	<li> For triple bar, use "<->". (That's a left corner bracket, a dash, and then a right corner bracket.</li> 
 </ul> 
+
+
+
+<div class = "exercises"> 
 <ol> 
 		<li> <ol>
 		<li> A v B </li> 
@@ -131,7 +141,14 @@
 							</script>
 
 		</ol></li>
+
 		
+		
+		
+		
+		
+
+
 		<li> <ol>
 					<li> A -> (B . C) </li> 
 					<li> A </li> 
@@ -183,7 +200,7 @@
 					<p id="response8"></p> 
 							<script>
 								function checkproof8(){
-									var x=document.getElementById("c7").value;
+									var x=document.getElementById("notA8").value;
 									
 									
 									if(x=="~ A") {document.getElementById("response8").innerHTML="Good job!"} else 
@@ -260,6 +277,7 @@
 
 
 </ol> 
+</div class = "exercises">
 
 </div> 
 </div> 
