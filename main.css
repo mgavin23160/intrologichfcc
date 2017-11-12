@@ -9,10 +9,9 @@ body { background: -webkit-linear-gradient(black, red); /* Safari 5.1-6.0 */
 }
 
 
-.pictureBar{overflow: hidden; height: 202px;}
-.logician {height: 202px;}
 
-.container {background-color:blue; width:84%; margin:auto; margin-top:0; z-index:+3;
+
+.container {background-color:white; width:84%; margin:auto; margin-top:0; z-index:+3;
 }
 
 .wrapper {margin-top:120px; background-color: white; z-index: -1; padding: 20px;
