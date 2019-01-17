@@ -62,10 +62,10 @@ body { background: -webkit-linear-gradient(black, red); /* Safari 5.1-6.0 */
 .schedule tr:nth-child(even){background-color: #CCC;
 	}
 	
-.column1 {float: left;
+.column1 {background-color: grey; margin-top:20px; margin-left: 20px;  display: inline-block; background-color: white;
 	}
 
-.column2 {float: right;
+.column2 {width: 300px; background-color: blue; margin-top: 20px; margin-right: 300px; display: inline-block; vertical-align: top; background-color: white;
 }
 	
 	
