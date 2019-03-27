@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Canvas</title>
+	<link rel="stylesheet" type="text/css" href="C:\Users\Me\Documents\Github\intrologichfcc\main.css">
+    <style>
+      body {
+        
+       
+      }
+	  .canvasBlock {display: inline-block;vertical-align: top;}
+	  .instructionsBlock {display: inline-block; vertical-align: center; width: 45%;}
+	  
+	  
+    </style>
+  </head>
+  
+  
+  <body>
+  
+
+  <div class= "container"> 
+			<div class="banner"> 
+			<h1> Introduction to Logic</h1>
+			<ul> 
+			<li> <a href="index">Home </a></li> 
+			<li> <a href="attachments/syllabus.docx">Syllabus </a></li> 
+			<li> <a href="schedule">Schedule </a></li> 
+			<li> <a href="unit1">Unit 1</a></li> 
+			<li> <a href="unit2">Unit 2 </a></li> 
+			<li> <a href="unit3">Unit 3 </a></li> 
+			<li> <a href="unit4">Unit 4 </a></li> 
+			<li> <a href="gradeCalculator"> Grade Calculator </a> </li> 
+			</ul> 
+
+				</div class="banner"> 
+<div class = "wrapper">	
+<h2>Syllogism Diagramming Practice</h2>
+
+<p> Next to each syllogism below is an interactive Venn diagram template. Toggle between the "shade" and "X" modes as needed, and click the appropriate place on the diagram to alter it. Once you've filled in the diagram, you can check it by clicking the appropriate button below the syllogism. If you make a mistake, you can click the reset button to start over. (An undo button is in the works.) Once the diagram is correct, you'll be asked whether the syllogism is valid or invalid. </p>
+  
+ <div class="syllogism">
+			 <div class= "canvasBlock">
+				<canvas id ="myCanvas1">
+				  <p>If you're seeing this text, it's because your browser doesn't support the html canvas tool, which was used to produce the graphics required for the exercise.</p>
+				</canvas>
+			</div class = "canvasBlock"> 
+			
+			<div class="instructionsBlock" > 
+			
+			<p id="area">  </p> 
+			<ol> <li> No horses are zebras.</li> 
+			     <li> Some mares are zebras.</li> 
+				 <li> Therefore, some mares are not horses.</li> 
+				 </ol> 
+			
+			<button type = "button" onclick = "context1.reset()">Reset</button>
+			<button type = "button" onclick = "check(currentState1, correctState1, 'checkDiagramAnswer1', 'validAppear1', 'invalidAppear1', canvas1)">Check the Diagram</button>
+			
+			
+			
+
+			<p id = "checkDiagramAnswer1"> </p>
+			
+			<p> <span id = "validAppear1"> </span><span id = "invalidAppear1"> </span> </p>
+			
+			<p id = "validityAnswer1"> </p>
+			<p id = "responseToValid1"> </p>
+		
+			
+		
+			</div class = "instructionsBlock"> 
+			
+	</div class = "syllogism">
+	
+	
+
+<script>
+
+// A bunch of values, functions, and properties to be plugged into functions later.
+//Simples:
+var width = 400; 
+var height = 250;
+var radius = 80;
+var trans = {x: width/2, y: height/2 + radius/2}; 
+function degToRad(degrees) {return Math.PI*degrees/180};
+
+const correctValidAnswer = "Correct! The argument is valid. Remember, that doesn't mean the premises are true.";
+const incorrectValidAnswer = "No. The argument is invalid.";
+const correctInvalidAnswer = "Correct!";
+const incorrectInvalidAnswer = "No. The argument is valid.";
+
+//The cirlce properties:
+const middle = {
+	x: 0,
+	y: - radius,
+	radius: radius,
+	
+}
+
+
+const major = {
+	x: radius/2,
+	y: 0,
+	radius: radius,
+	
+}
+
+
+const minor = {
+	x: -radius/2,
+	y: 0,
+	radius: radius,
+	
+}
+
+//shade button and X button properties:
+const shadeButton = {
+topLeftX: .025*width - trans.x, 
+topLeftY: .04*height - trans.y,
+length: 50,
+height: 18
+
+}
+
+const xButton = {
+topLeftX: .16*width - trans.x,
+topLeftY: .04*height - trans.y,
+length: 18,
+height: 18
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Now define the object constructors that will generate successive canvases:
+
+// canvasObject Constructor. Constructing the js object that's associated with the canvas element:
+function canvasMetaObject(htmlCanvasElement) {
+	this.object = document.querySelector(htmlCanvasElement);
+	
+	this.object.width = width; 
+	this.object.height = height;
+
+	
+	this.placeX = false;
+	
+	this.validAnswer = correctValidAnswer;
+	this.invalidAnswer = incorrectInvalidAnswer;
+	this.validityAnswerPlace = 'validityAnswer1';
+	
+	
+};
+
+
+const canvas1 = new canvasMetaObject('#myCanvas1', '#validityAnswer1');
+
+
+
+
+//Gets the mousePosition on whichever canvasMetaObject you plug into the first argument.
+function getMousePosCanvas(canvasMetaObject, event) {
+			var rectangle = canvasMetaObject.object.getBoundingClientRect();
+			return {
+				x: event.clientX - rectangle.left - trans.x,
+				y: event.clientY - rectangle.top - trans.y
+			};
+		
+		};
+
+
+// Storing the state of the diagram and the parameters for its modification:
+//const currentState1 = {placeX: undefined};
+
+function initialState() {
+	
+	
+	this.oneShaded = false;
+	this.twoShaded = false;
+	this.threeShaded = false;
+	this.fourShaded = false;
+	this.fiveShaded = false;
+	this.sixShaded = false;
+	this.sevenShaded = false;
+	this.xes = false;
+	this.xinone = false; 
+	this.xintwo = false; 
+	this.xinthree = false; 
+	this.xinfour = false; 
+	this.xinfive = false; 
+	this.xinsix = false; 
+	this.xinseven = false;
+	this.xOneTwo = false;
+	this.xTwoThree = false; 
+	this.xThreeFour = false;
+	this.xFiveSix = false;
+	this.xSixSeven = false;
+	this.xTwoFive = false;
+	this.xThreeSix = false;
+	this.xFourSeven = false;
+	this.xOneFour = false;
+	this.xRandom = false;
+
+
+};
+
+const initialState1 = new initialState();
+
+function currentState() {
+	
+	
+	this.oneShaded = false;
+	this.twoShaded = false;
+	this.threeShaded = false;
+	this.fourShaded = false;
+	this.fiveShaded = false;
+	this.sixShaded = false;
+	this.sevenShaded = false;
+	this.xes = false;
+	this.xinone = false; 
+	this.xintwo = false; 
+	this.xinthree = false; 
+	this.xinfour = false; 
+	this.xinfive = false; 
+	this.xinsix = false; 
+	this.xinseven = false;
+	this.xOneTwo = false;
+	this.xTwoThree = false; 
+	this.xThreeFour = false;
+	this.xFiveSix = false;
+	this.xSixSeven = false;
+	this.xTwoFive = false;
+	this.xThreeSix = false;
+	this.xFourSeven = false;
+	this.xOneFour = false;
+	this.xRandom = false;
+
+
+};
+
+var currentState1 = new currentState();
+
+
+const correctState1 = {
+
+			oneShaded: false,
+			twoShaded: false,
+			threeShaded: true,
+			fourShaded: true,
+			fiveShaded: false,
+			sixShaded: false,
+			sevenShaded: false,
+			xes: true,
+			xinone: false, 
+			xintwo: true, 
+			xinthree: false, 
+			xinfour: false, 
+			xinfive: false, 
+			xinsix: false, 
+			xinseven: false,
+			xOneTwo: false,
+			xTwoThree: false, 
+			xThreeFour: false,
+			xFiveSix: false,
+			xSixSeven: false,
+			xTwoFive: false,
+			xThreeSix: false,
+			xFourSeven: false,
+			xOneFour: false,
+			xRandom: false
+
+};
+
+
+
+function isEquivalent(a, b) {
+
+	var aProps = Object.getOwnPropertyNames(a);
+    var bProps = Object.getOwnPropertyNames(b);
+	
+		for (var i = 0; i < aProps.length; i++) {
+			var propName = aProps[i];
+
+			// If values of same property are not equal,
+			// objects are not equivalent
+			if (a[propName] !== b[propName]) {
+				return false;
+			}
+			
+		
+		}
+
+		return true;
+
+};
+
+
+//the function i defined about seems to work for checking if the objects have the same values for each property. The reason I think this is so is that, when I tell it to report in the html whether the objects are equivalent, it gives appropriate responses. But it seems like the function inside the object constructor can't "see" that function. The object's method is not responding at all when and only when that function is called within the condition clause. 
+ 
+ /*There's actually no reason to use a constructor here. One function will do for all the diagrams. You just plug in different values in the button. You have to make all the buttons different anyhow.
+function answerChecker(currentState, initialState, responsePlace) {
+	this.check = function(currentState, initialState, responsePlace) {
+	
+	
+	if (isEquivalent(currentState, initialState)) {
+		
+		document.getElementById(responsePlace).innerHTML = "yes";
+		
+		}
+		
+		
+	
+	};
+
+};
+
+var answerChecker1 = new answerChecker(currentState1, initialState1, 'checkDiagramAnswer1') */
+
+
+/*canvas1.prototype.validAnswer = function() {
+	document.getElementById("validityAnswer1").innerHTML = correctValidAnswer;
+	};*/
+
+/*canvasMetaObject.prototype.invalidAnswer = function() {
+	document.getElementById("validityAnswer1").innerHTML = "incorrect";
+}*/
+
+
+canvas1.validAnswer = correctValidAnswer;
+canvas1.invalidAnswer = incorrectInvalidAnswer;
+canvas1.validityAnswerPlace = "'validityAnswer1'";
+
+canvas1.name = "canvas1";
+
+
+function responseToValid(validityAnswerPlace, canvasMetaObject) {document.getElementById(validityAnswerPlace).innerHTML = canvasMetaObject.validAnswer};
+function responseToInvalid(validityAnswerPlace, canvasMetaObject) {document.getElementById(validityAnswerPlace).innerHTML = canvasMetaObject.invalidAnswer};
+//responseToValid('validityAnswer1', canvas1); 
+
+function check(currentState, correctState, responsePlace, validAppear, invalidAppear, canvasMetaObject) {
+		
+		if(isEquivalent(currentState, correctState)){
+		
+		//var object = canvasMetaObject;
+		//var place = validityAnswerPlace;
+		
+		document.getElementById(responsePlace).innerHTML = "Good job! Your diagram is correct. Now, is the syllogism valid or invalid?";
+		document.getElementById(validAppear).innerHTML = '<button onclick = "responseToValid(' + canvasMetaObject.validityAnswerPlace + ',' + canvasMetaObject.name + ')" > Valid </button>';
+		document.getElementById(invalidAppear).innerHTML = '<button onclick = "responseToInvalid('+ canvasMetaObject.validityAnswerPlace + ',' + canvasMetaObject.name + ')"> Invalid </button>';
+		}
+		
+		else {document.getElementById(responsePlace).innerHTML = "Sorry, the diagram is not correct. Try again.";}
+};
+
+//document.getElementById("
+
+
+//Context Constructor. The context is the object whose built-in method does the drawing.
+function canvasContext(canvasMetaObject, currentState, minorLetter, majorLetter, middleLetter, checkDiagramAnswer, validAppear, invalidAppear, validityAnswer) {
+	this.ctx = canvasMetaObject.object.getContext('2d');
+	
+	this.drawChalkboard = function() {
+				this.ctx.fillStyle = 'rgb(0,0,0)';
+				this.ctx.fillRect(0,0,width,height);
+				
+				this.ctx.translate(trans.x, trans.y);
+				
+				//Drawing the buttons
+
+				this.ctx.strokeStyle = 'rgb(255,255,255)';
+				this.ctx.fillStyle = 'rgb(255,255,255)';
+				this.ctx.font = "15px arial";
+				this.ctx.fillText("Shade", shadeButton.topLeftX+3.5, shadeButton.topLeftY+15);
+				this.ctx.strokeRect(shadeButton.topLeftX, shadeButton.topLeftY, shadeButton.length, shadeButton.height);
+				this.ctx.font = "15px arial";
+				this.ctx.fillStyle = 'rgb(255,255,255)';
+				this.ctx.fillText("X", xButton.topLeftX+3.5, xButton.topLeftY+15);
+				this.ctx.strokeRect(xButton.topLeftX, xButton.topLeftY, 18, 18);
+
+
+				//add circles by calling the middle, minor, and major object properties, as defined previously
+				this.ctx.arc(middle.x, middle.y, radius, degToRad(0),degToRad(360), false);
+				this.ctx.stroke();
+				this.ctx.beginPath();
+				this.ctx.arc(major.x, major.y, radius, degToRad(0),degToRad(360), false);
+				this.ctx.stroke();
+				this.ctx.beginPath();
+				this.ctx.arc(minor.x, minor.y, radius, degToRad(0),degToRad(360), false);
+				this.ctx.stroke();
+
+
+				//add the labels
+
+				this.ctx.fillStyle = 'rgb(0,255,0)'
+				this.ctx.font = "22px arial";
+				this.ctx.fillText(minorLetter, -150, 10);
+
+				this.ctx.font = "22px arial";
+				this.ctx.fillText(majorLetter, 125, 10);
+
+				this.ctx.font = "22px arial";
+				this.ctx.fillText(middleLetter, 55, -145);
+
+				//set fill back to green and stroke back to red
+				this.ctx.fillStyle = 'rgb(0,255,0)';
+				this.ctx.strokeStyle = 'rgb(255,0,0)';
+	}
+	
+	
+	
+	this.shade1 = function() {
+			this.ctx.strokeStyle = "red";
+			this.ctx.beginPath();
+			this.ctx.fillStyle = 'rgb(0,255,0)';
+			this.ctx.arc(middle.x, middle.y, radius, degToRad(5), degToRad(175), true);
+			this.ctx.arc(minor.x, minor.y, radius, degToRad(242),degToRad(300), false);
+			this.ctx.arc(major.x, major.y, radius, degToRad(242),degToRad(300), false);
+			this.ctx.fill();
+			this.ctx.stroke();
+			currentState.oneShaded = true;
+	 }
+	 
+	 
+	this.shade2 = function() {
+			this.ctx.strokeStyle = 'rgb(255,0,0)';
+			this.ctx.beginPath();
+			this.ctx.arc(minor.x, minor.y, radius, degToRad(300), degToRad(242), true);
+			this.ctx.arc(middle.x, middle.y, radius, degToRad(175), degToRad(118), true);
+			this.ctx.arc(major.x, major.y, radius, degToRad(188), degToRad(242), false);
+			this.ctx.stroke();
+			this.ctx.fill();
+			//currentState.twoShaded = true;
+	}
+
+	this.shade3 = function() {
+			this.ctx.strokeStyle = "red";
+			this.ctx.beginPath();
+			this.ctx.arc(major.x, major.y, radius, degToRad(240), degToRad(188), true); 
+			this.ctx.arc(middle.x, middle.y, radius, degToRad(120),degToRad(60), true);
+			this.ctx.arc(minor.x, minor.y, radius, degToRad(-5), degToRad(-59), true);
+			this.ctx.stroke();
+			this.ctx.fill();
+			currentState.threeShaded = true;
+	}
+
+
+
+	this.shade4 = function() {
+			this.ctx.strokeStyle = "red";
+			this.ctx.beginPath();
+			this.ctx.arc(major.x, major.y, radius, degToRad(300), degToRad(242), true);
+			this.ctx.arc(minor.x, minor.y, radius, degToRad(300), degToRad(352), false);
+			this.ctx.arc(middle.x, middle.y, radius, degToRad(58), degToRad(365), true);
+			this.ctx.stroke();
+			this.ctx.fill();
+			currentState.fourShaded = true;
+	}
+
+
+	this.shade5 = function() {
+			this.ctx.strokeStyle = "red"; 
+			this.ctx.beginPath();
+			this.ctx.arc(minor.x, minor.y, radius, degToRad(242), degToRad(60), true);
+			this.ctx.arc(major.x, major.y, radius, degToRad(118), degToRad(188), false); 
+			this.ctx.arc(middle.x, middle.y, radius, degToRad(118),degToRad(175), false);
+			this.ctx.stroke();
+			this.ctx.fill();
+			currentState.fiveShaded = true;
+	}
+
+	this.shade6 = function() {
+			this.ctx.strokeStyle = "red";
+			this.ctx.beginPath();
+			this.ctx.arc(major.x, major.y, radius, degToRad(118), degToRad(188), false);
+			this.ctx.arc(middle.x, middle.y, radius, degToRad(120), degToRad(60), true);
+			this.ctx.arc(minor.x, minor.y, radius, degToRad(-5), degToRad(60), false); 
+			this.ctx.stroke();
+			this.ctx.fill();
+			currentState.sixShaded = true;
+	}
+
+
+	this.shade7 = function() {
+			this.ctx.strokeStyle = "red"; 
+			this.ctx.beginPath(); 
+			this.ctx.arc(major.x, major.y, radius, degToRad(120), degToRad(300), true);
+			this.ctx.arc(middle.x, middle.y, radius, degToRad(5), degToRad(60), false);
+			this.ctx.arc(minor.x, minor.y, radius, degToRad(-5), degToRad(60), false);
+			this.ctx.stroke();
+			this.ctx.fill();
+			currentState.sevenShaded = true;
+	}
+
+
+	this.xin1 = function() {
+		this.ctx.font = "22px arial";
+		this.ctx.fillStyle = 'red';
+		this.ctx.fillText("X", 0, -120);
+		currentState.xinone = true;
+		currentState.xes = true;
+	};
+
+	this.xin2 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", -55, -45);
+			currentState.xintwo = true;
+			currentState.xes = true;
+	};
+
+	this.xin3 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", -5, -30);
+			currentState.xinthree = true;
+			currentState.xes = true;
+	};
+
+	this.xin4 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", 45, -45);
+			currentState.xinfour = true;
+			currentState.xes = true;
+	};
+
+	this.xin5 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", -76, 25);
+			currentState.xinfive = true;
+			currentState.xes = true;
+	};
+
+	this.xin6 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", -1, 25);
+			currentState.xinsix = true;
+			currentState.xes = true;
+	};
+
+	this.xin7 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", 75, 25);
+			currentState.xinseven = true;
+			currentState.xes = true;
+	};
+		
+		//testing 1 2 
+	this.x1t2 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", -40, -70);
+			currentState.xOneTwo = true;
+			currentState.xes = true;
+	};
+
+	this.x3t4 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", 22, -35);
+			currentState.xThreeFour = true;
+			currentState.xes = true;
+	};
+
+	this.x2t3 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", -32, -35);
+			currentState.xTwoThree = true;
+			currentState.xes = true;
+	};
+
+	this.x1t4 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", major.x, major.y - radius + .04*height);
+			currentState.xOneFour = true;
+			currentState.xes = true;
+	};
+
+	this.x2t5 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", middle.x + 1.1*radius * Math.cos(degToRad(145)), middle.y + 1.1*radius * Math.sin(degToRad(145)));
+			currentState.xTwoFive = true;
+			currentState.xes = true;
+	};
+
+	this.x3t6 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", middle.x + 1.1*radius * Math.cos(degToRad(90)), middle.y + 1.1*radius * Math.sin(degToRad(90)));
+			currentState.xThreeSix = true;
+			currentState.xes = true;
+	};
+	 
+	this.x4t7 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", middle.x + .98*radius * Math.cos(degToRad(45)), middle.y + .98*radius * Math.sin(degToRad(45)));
+			currentState.xFourSeven = true;
+			currentState.xes = true;
+	}; 
+
+	this.x5t6 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", major.x + 1.1*radius * Math.cos(degToRad(160)), major.y + 1.1*radius * Math.sin(degToRad(160)));
+			xFiveSix = true;
+			xes = true;
+	}; 
+
+	this.x6t7 = function() {
+			this.ctx.font = "22px arial";
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillText("X", minor.x + .98*radius * Math.cos(degToRad(30)), minor.y + .98*radius * Math.sin(degToRad(30)));
+			currentState.xSixSeven = true;
+			currentState.xes = true;
+	};
+	
+
+	this.setX = function() {
+			this.ctx.fillStyle = "black";
+			this.ctx.fillRect(.025*width - trans.x, .04*height - trans.y, 50, 18);
+			this.ctx.strokeStyle = "white";
+			this.ctx.strokeRect(.025*width - trans.x, .04*height - trans.y, 50, 18);
+			this.ctx.font = "15px arial";
+			this.ctx.fillStyle = "white";
+			this.ctx.fillText("Shade", .03*width - trans.x, .1*height - trans.y);
+			
+			
+			this.ctx.fillStyle = "yellow";
+			this.ctx.fillRect(.16*width - trans.x, .04*height - trans.y, 18, 18);
+			this.ctx.strokeStyle = "red";
+			this.ctx.strokeRect(.16*width - trans.x, .04*height - trans.y, 18, 18);
+			this.ctx.font = "15px arial";
+			this.ctx.fillStyle = "blue";
+			this.ctx.fillText("X", .17*width - trans.x, .1*height - trans.y);
+			
+			
+};
+
+	this.setShade = function() {
+			this.ctx.fillStyle = "black";
+			this.ctx.fillRect(.16*width - trans.x, .04*height - trans.y, 18, 18);
+			this.ctx.strokeStyle = "white";
+			this.ctx.strokeRect(.16*width - trans.x, .04*height - trans.y, 18, 18);
+			
+			this.ctx.font = "15px arial";
+			this.ctx.fillStyle = 'rgb(255,255,255)';
+			this.ctx.fillText("X", .17*width - trans.x, .1*height - trans.y);
+			this.ctx.strokeStyle = "white";
+			this.ctx.strokeRect(.025*width - trans.x, .04*height - trans.y, 50, 18);
+			
+			
+			
+			this.ctx.fillStyle = "yellow";
+			this.ctx.fillRect(.025*width - trans.x, .04*height - trans.y, 50, 18);
+			this.ctx.strokeStyle = "red";
+			this.ctx.strokeRect(.025*width - trans.x, .04*height - trans.y, 50, 18);
+			this.ctx.fillStyle = "blue";
+			this.ctx.fillText("Shade", .03*width - trans.x, .1*height - trans.y);
+			
+			
+			this.ctx.fillStyle = 'rgb(0,255,0)'; 
+			
+};
+
+	this.reset = function() {
+		this.ctx.moveTo(middle.x + radius, middle.y);
+		this.ctx.translate(- trans.x, - trans.y);
+		this.drawChalkboard();
+		
+		currentState.oneShaded = false;
+		currentState.twoShaded = false;
+		currentState.threeShaded = false;
+		currentState.fourShaded = false;
+		currentState.fiveShaded = false;
+		currentState.sixShaded = false;
+		currentState.sevenShaded = false;
+		currentState.xes = false;
+		currentState.xinone = false; 
+		currentState.xintwo = false; 
+		currentState.xinthree = false; 
+		currentState.xinfour = false; 
+		currentState.xinfive = false; 
+		currentState.xinsix = false; 
+		currentState.xinseven = false;
+		currentState.xOneTwo = false;
+		currentState.xTwoThree = false; 
+		currentState.xThreeFour = false;
+		currentState.xFiveSix = false;
+		currentState.xSixSeven = false;
+		currentState.xTwoFive = false;
+		currentState.xThreeSix = false;
+		currentState.xFourSeven = false;
+		currentState.xOneFour = false;
+		currentState.xRandom = false;
+		
+		this.setShade();
+		canvasMetaObject.placeX = false;
+		
+		document.getElementById(checkDiagramAnswer).innerHTML = "";
+		document.getElementById(validAppear).innerHTML = "";
+		document.getElementById(invalidAppear).innerHTML = "";
+		document.getElementById(validityAnswer).innerHTML = "";
+		
+		
+		
+	};
+	
+	
+	
+};
+
+const context1 = new canvasContext(canvas1, currentState1, "M", "H", "Z", 'checkDiagramAnswer1', 'validAppear1', 'invalidAppear1', 'validityAnswer1');
+			context1.drawChalkboard();
+			context1.setShade();
+
+
+//Shader constructor. A listener that activates the functions in the context. The drawing functions cannot be inside the same object as the listener for some reason.
+function shader(canvasMetaObject, canvasContext) {
+	
+
+	//The eventListener that will activate the appropriate shading function on click.
+	this.shader = canvasMetaObject.object.addEventListener("click", function(event) {
+		
+		var mousePos = getMousePosCanvas(canvasMetaObject, event);
+		
+		//document.getElementById("checkDiagramAnswer1").innerHTML = isEquivalent(initialState, currentState);
+		
+		
+		if(canvasMetaObject.placeX === false) {
+		
+			if( !(Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) &&
+						!(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+						(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius)
+				
+				) 
+					{canvasContext.shade1();}
+					
+				
+				else if((Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) &&
+						!(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+						(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius)
+				
+				) 
+					{canvasContext.shade2();}
+				
+				else if ((Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+					(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+					(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius) 	    )
+					{ canvasContext.shade3();}
+					
+				else if (!(Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+					(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+					(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius)	         ) 
+					{ canvasContext.shade4();}
+					
+				else if ((Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+					!(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+					!(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius)     	) 
+					{ canvasContext.shade5();}
+				
+				else if ((Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+					(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+					!(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius)   	) 
+					{ canvasContext.shade6();}
+				
+				else if (!(Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+					(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+					!(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius)   	) 
+					{ canvasContext.shade7();}
+			};
+			
+	
+	}, false);
+
+
+};
+
+//I got an answer to incidentally related questions while doing this one. Can you have an argument in the object constructor that you don't plug in when you create the object? Yes. But can you plug something into that argument-place that refers to an object you haven't written? NO! The argument has to exist, and it has to appear before the object which calls on it gets constructed, although it doesn't have to appear before the constructor.
+
+
+const shader1 = new shader(canvas1, context1);
+
+
+
+// Now I need an xer constructor. The xer will activate x placing functions.
+
+function xer (canvasMetaObject, canvasContext) {
+
+	this.xer = canvasMetaObject.object.addEventListener("click", function (evt2) {
+    
+	var mousePos = getMousePosCanvas(canvasMetaObject, event);
+		
+	
+		if(canvasMetaObject.placeX === true) {
+		
+			if (
+			((Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius + 10) && (Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) > radius -10))
+			&& (mousePos.y < -75 && mousePos.y > -90)
+			&& (mousePos.x < -4 && mousePos.x > -80)
+			)
+			{canvasContext.x1t2()}
+			
+			else if (
+			((Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius + 10) && (Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) > radius -10))
+			&& (Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius)
+			&& !(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius)
+			)
+			{canvasContext.x6t7()}
+			
+			else if (
+			((Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius + 10) && (Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) > radius -10))
+			&& (Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius)
+			&& (Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius)
+			)
+			{canvasContext.x3t4()}
+			
+			else if (
+			((Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius + 10) && (Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) > radius -10))
+			&& !(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius)
+			&& (Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius)
+			)
+			{canvasContext.x2t5()}
+			
+			else if (
+			((Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius + 10) && (Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) > radius -10))
+			&& (Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius)
+			&& (Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius)
+			)
+			{canvasContext.x3t6()}
+			
+			else if (
+			((Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius + 10) && (Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) > radius -10))
+			&& (Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius)
+			&& !(Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius)
+			)
+			{canvasContext.x4t7()}
+			
+			else if (
+			((Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius + 10) && (Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) > radius -10))
+			&& !(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius)
+			&& (Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius)
+			)
+			{canvasContext.x5t6()}
+			
+			else if (
+			((Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius + 10) && (Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) > radius -10))
+			&& (Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius)
+			&& !(Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius)
+			)
+			{canvasContext.x1t4()}
+			
+			else if (
+			((Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius + 10) && (Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) > radius -10))
+			&& (Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius)
+			&& (Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius)
+			)
+			{canvasContext.x2t3()}
+			
+			else if 
+				(!(Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+				!(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+				(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius)   )
+				{ canvasContext.xin1()}
+				
+				else if 
+				((Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+				!(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+				(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius) 	)
+				{ canvasContext.xin2()}
+				
+				else if 
+				((Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+				(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+				(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius) 	)
+				{ canvasContext.xin3()}
+				
+				else if 
+				(!(Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+				(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+				(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius) 	)
+				{ canvasContext.xin4()}
+				
+				else if 
+				((Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+				!(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+				!(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius) 	)
+				{ canvasContext.xin5()}
+				
+				
+				else if 
+				((Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+				(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+				!(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius) 	)
+				{ canvasContext.xin6()}
+				
+				else if 
+				(!(Math.sqrt((mousePos.x - minor.x)**2 + (mousePos.y - minor.y)**2) < radius) && 
+				(Math.sqrt((mousePos.x - major.x)**2 + (mousePos.y - major.y)**2) < radius) &&
+				!(Math.sqrt((mousePos.x - middle.x)**2 + (mousePos.y - middle.y)**2) < radius) 	)
+				{ canvasContext.xin7()}
+			
+				else if
+				(
+				!(mousePos.x > .025*width - trans.x & mousePos.x < .16*width - trans.x + 18 && mousePos.y > .04*height - trans.y && mousePos.y < .04*height - trans.y + 18)
+				)
+				{
+				canvasContext.ctx.font = "22px arial";
+				canvasContext.ctx.fillStyle = 'red';
+				canvasContext.ctx.fillText("X", mousePos.x, mousePos.y);
+				currentState.xRandom = true;
+				currentState.xes = true;
+				}
+			
+			
+		};
+		
+}, false); 
+
+};
+
+
+const xer1 = new xer(canvas1, context1);
+
+
+
+
+//toggleSwitch constructor: 
+function toggleSwitch(canvasMetaObject, canvasContext) {
+
+	this.toggleSwitch = canvasMetaObject.object.addEventListener("click", function(event) {
+	
+		var mousePos = getMousePosCanvas(canvasMetaObject, event);
+		
+		if (
+		mousePos.x > .16*width - trans.x && mousePos.x < .16*width - trans.x + 50 && mousePos.y > .04*height -trans.y && mousePos.y < .04*height - trans.y + 18 && !(canvasMetaObject.placeX === true)
+		)
+			{canvasContext.setX();
+			 canvasMetaObject.placeX = true;
+			}
+			
+		else if (
+		mousePos.x > .025*width - trans.x && mousePos.x < .025*width - trans.x + 50 && mousePos.y > .04*height - trans.y && mousePos.y < .04*height - trans.y + 18 && !(canvasMetaObject.placeX === false)
+		)
+			{canvasContext.setShade();
+			 canvasMetaObject.placeX = false;
+			}
+		
+	
+	}, false);
+
+};
+
+const toggleSwitch1 = new toggleSwitch(canvas1, context1);
+
+
+				
+
+</script> 
+	
+
+ <div class="syllogism">
+			 <div class= "canvasBlock">
+				<canvas id ="myCanvas2">
+				  <p>If you're seeing this text, it's because your browser doesn't support the html canvas tool, which was used to produce the graphics required for the exercise.</p>
+				</canvas>
+			</div class = "canvasBlock"> 
+			
+			<div class="instructionsBlock" > 
+			
+			<p id="area">  </p> 
+			<ol> <li> No eukaryotes are prokaryotes.</li> 
+			     <li> Some archaea are prokaryotes.</li> 
+				 <li> Therefore, some archaea are not eukaryotes.</li> 
+				 </ol> 
+			
+			<button type = "button" onclick = "context2.reset()">Reset</button>
+			<button type = "button" onclick = "check(currentState2, correctState2, 'checkDiagramAnswer2', 'validAppear2', 'invalidAppear2', canvas2)">Check the Diagram</button>
+			
+			
+			
+
+			<p id = "checkDiagramAnswer2"> </p>
+			
+			<p> <span id = "validAppear2"> </span><span id = "invalidAppear2"> </span> </p>
+			
+			<p id = "validityAnswer2"> </p>
+		
+			
+		
+			</div class = "instructionsBlock"> 
+			
+	</div class = "syllogism">
+	
+
+	
+<script>
+
+
+
+const initialState2 = new initialState();
+var currentState2 = new currentState();
+
+const canvas2 = new canvasMetaObject('#myCanvas2');
+const context2 = new canvasContext(canvas2, currentState2, "A", "E", "P", 'checkDiagramAnswer2', 'validAppear2', 'invalidAppear2', 'validityAnswer2');
+context2.drawChalkboard();
+context2.setShade();
+
+const shader2 = new shader(canvas2, context2);
+const xer2 = new xer(canvas2, context2);
+const toggleSwitch2 = new toggleSwitch(canvas2, context2);
+
+
+const correctState2 = {
+
+			oneShaded: false,
+			twoShaded: false,
+			threeShaded: true,
+			fourShaded: true,
+			fiveShaded: false,
+			sixShaded: false,
+			sevenShaded: false,
+			xes: true,
+			xinone: false, 
+			xintwo: true, 
+			xinthree: false, 
+			xinfour: false, 
+			xinfive: false, 
+			xinsix: false, 
+			xinseven: false,
+			xOneTwo: false,
+			xTwoThree: false, 
+			xThreeFour: false,
+			xFiveSix: false,
+			xSixSeven: false,
+			xTwoFive: false,
+			xThreeSix: false,
+			xFourSeven: false,
+			xOneFour: false,
+			xRandom: false
+
+};
+
+
+canvas2.validAnswer = correctValidAnswer; 
+canvas2.invalidAnswer = incorrectInvalidAnswer; 
+canvas2.name = "canvas2";
+canvas2.validityAnswerPlace = "'validityAnswer2'";
+
+
+
+
+
+</script>
+	
+<div class="syllogism">
+			 <div class= "canvasBlock">
+				<canvas id ="myCanvas3">
+				  <p>If you're seeing this text, it's because your browser doesn't support the html canvas tool, which was used to produce the graphics required for the exercise.</p>
+				</canvas>
+			</div class = "canvasBlock"> 
+			
+			<div class="instructionsBlock" > 
+			
+			<p id="area"> </p> 
+			<ol> <li> Some tigers are meat eaters.</li> 
+			     <li> Some tigers are striped animals.</li> 
+				 <li> Therefore, some striped animals are meat eaters.</li> 
+				 </ol> 
+			
+			<button type = "button" onclick = "context3.reset()">Reset</button>
+			<button type = "button" onclick = "check(currentState3, correctState3, 'checkDiagramAnswer3', 'validAppear3', 'invalidAppear3', canvas3)">Check the Diagram</button>
+			
+			
+			
+
+			<p id = "checkDiagramAnswer3"> </p>
+			
+			<p> <span id = "validAppear3"> </span><span id = "invalidAppear3"> </span> </p>
+			
+			<p id = "validityAnswer3"> </p>
+		
+			
+		
+			</div class = "instructionsBlock"> 
+			
+	</div class = "syllogism">
+	
+
+	
+<script>
+
+
+
+const initialState3 = new initialState();
+var currentState3 = new currentState();
+
+const canvas3 = new canvasMetaObject('#myCanvas3');
+const context3 = new canvasContext(canvas3, currentState3, "S", "ME", "T", 'checkDiagramAnswer3', 'validAppear3', 'invalidAppear3', 'validityAnswer3');
+context3.drawChalkboard();
+context3.setShade();
+
+const shader3 = new shader(canvas3, context3);
+const xer3 = new xer(canvas3, context3);
+const toggleSwitch3 = new toggleSwitch(canvas3, context3);
+
+
+const correctState3 = {
+
+			oneShaded: false,
+			twoShaded: false,
+			threeShaded: false,
+			fourShaded: false,
+			fiveShaded: false,
+			sixShaded: false,
+			sevenShaded: false,
+			xes: true,
+			xinone: false, 
+			xintwo: false, 
+			xinthree: false, 
+			xinfour: false, 
+			xinfive: false, 
+			xinsix: false, 
+			xinseven: false,
+			xOneTwo: false,
+			xTwoThree: true, 
+			xThreeFour: true,
+			xFiveSix: false,
+			xSixSeven: false,
+			xTwoFive: false,
+			xThreeSix: false,
+			xFourSeven: false,
+			xOneFour: false,
+			xRandom: false
+
+};
+
+
+canvas3.validAnswer = incorrectValidAnswer; 
+canvas3.invalidAnswer = correctInvalidAnswer; 
+canvas3.name = "canvas3";
+canvas3.validityAnswerPlace = "'validityAnswer3'";
+
+
+
+
+
+</script>
+
+<div class="syllogism">
+			 <div class= "canvasBlock">
+				<canvas id ="myCanvas4">
+				  <p>If you're seeing this text, it's because your browser doesn't support the html canvas tool, which was used to produce the graphics required for the exercise.</p>
+				</canvas>
+			</div class = "canvasBlock"> 
+			
+			<div class="instructionsBlock" > 
+			
+			<p id="area"> </p> 
+			<ol> <li> Some people who never have to work on a Sunday unless their boss calls them Saturday are people who raise chickens in their back yard without a farming permit.</li> 
+			     <li> Some people who never have to work on a Sunday unless their boss calls them Saturday are people who have a bad sense of direction but manage to get around using maps.</li> 
+				 <li> Therefore, some people who have a bad sense of direction but manage to get around using maps are people who raise chickens in their back yard without a farming permit.</li> 
+				 </ol> 
+			
+			<button type = "button" onclick = "context4.reset()">Reset</button>
+			<button type = "button" onclick = "check(currentState4, correctState4, 'checkDiagramAnswer4', 'validAppear4', 'invalidAppear4', canvas4)">Check the Diagram</button>
+			
+			
+			
+
+			<p id = "checkDiagramAnswer4"> </p>
+			
+			<p> <span id = "validAppear4"> </span><span id = "invalidAppear4"> </span> </p>
+			
+			<p id = "validityAnswer4"> </p>
+		
+			
+		
+			</div class = "instructionsBlock"> 
+			
+	</div class = "syllogism">
+	
+
+	
+<script>
+
+
+
+const initialState4 = new initialState();
+var currentState4 = new currentState();
+
+const canvas4 = new canvasMetaObject('#myCanvas4');
+const context4 = new canvasContext(canvas4, currentState4, "M", "Ch", "Sun", 'checkDiagramAnswer4', 'validAppear4', 'invalidAppear4', 'validityAnswer4');
+context4.drawChalkboard();
+context4.setShade();
+
+const shader4 = new shader(canvas4, context4);
+const xer4 = new xer(canvas4, context4);
+const toggleSwitch4 = new toggleSwitch(canvas4, context4);
+
+
+const correctState4 = {
+
+			oneShaded: false,
+			twoShaded: false,
+			threeShaded: false,
+			fourShaded: false,
+			fiveShaded: false,
+			sixShaded: false,
+			sevenShaded: false,
+			xes: true,
+			xinone: false, 
+			xintwo: false, 
+			xinthree: false, 
+			xinfour: false, 
+			xinfive: false, 
+			xinsix: false, 
+			xinseven: false,
+			xOneTwo: false,
+			xTwoThree: true, 
+			xThreeFour: true,
+			xFiveSix: false,
+			xSixSeven: false,
+			xTwoFive: false,
+			xThreeSix: false,
+			xFourSeven: false,
+			xOneFour: false,
+			xRandom: false
+
+};
+
+
+canvas4.validAnswer = incorrectValidAnswer; 
+canvas4.invalidAnswer = correctInvalidAnswer; 
+canvas4.name = "canvas4";
+canvas4.validityAnswerPlace = "'validityAnswer4'";
+
+
+
+
+
+</script>
+
+<div class="syllogism">
+			 <div class= "canvasBlock">
+				<canvas id ="myCanvas5">
+				  <p>If you're seeing this text, it's because your browser doesn't support the html canvas tool, which was used to produce the graphics required for the exercise.</p>
+				</canvas>
+			</div class = "canvasBlock"> 
+			
+			<div class="instructionsBlock" > 
+			
+			<p id="area"> </p> 
+			<ol> <li> Some genin are shinobi.</li> 
+			     <li> All shinobi are ninjas.</li> 
+				 <li> Therefore, some ninjas are genin.</li> 
+				 </ol> 
+			
+			<button type = "button" onclick = "context5.reset()">Reset</button>
+			<button type = "button" onclick = "check(currentState5, correctState5, 'checkDiagramAnswer5', 'validAppear5', 'invalidAppear5', canvas5)">Check the Diagram</button>
+			
+			
+			
+
+			<p id = "checkDiagramAnswer5"> </p>
+			
+			<p> <span id = "validAppear5"> </span><span id = "invalidAppear5"> </span> </p>
+			
+			<p id = "validityAnswer5"> </p>
+		
+			
+		
+			</div class = "instructionsBlock"> 
+			
+	</div class = "syllogism">
+	
+
+	
+<script>
+
+
+
+const initialState5 = new initialState();
+var currentState5 = new currentState();
+
+const canvas5 = new canvasMetaObject('#myCanvas5');
+const context5 = new canvasContext(canvas5, currentState5, "N", "G", "S", 'checkDiagramAnswer5', 'validAppear5', 'invalidAppear5', 'validityAnswer5');
+context5.drawChalkboard();
+context5.setShade();
+
+const shader5 = new shader(canvas5, context5);
+const xer5 = new xer(canvas5, context5);
+const toggleSwitch5 = new toggleSwitch(canvas5, context5);
+
+
+const correctState5 = {
+
+			oneShaded: true,
+			twoShaded: false,
+			threeShaded: false,
+			fourShaded: true,
+			fiveShaded: false,
+			sixShaded: false,
+			sevenShaded: false,
+			xes: true,
+			xinone: false, 
+			xintwo: false, 
+			xinthree: true, 
+			xinfour: false, 
+			xinfive: false, 
+			xinsix: false, 
+			xinseven: false,
+			xOneTwo: false,
+			xTwoThree: false, 
+			xThreeFour: false,
+			xFiveSix: false,
+			xSixSeven: false,
+			xTwoFive: false,
+			xThreeSix: false,
+			xFourSeven: false,
+			xOneFour: false,
+			xRandom: false
+
+};
+
+
+canvas5.validAnswer = correctValidAnswer; 
+canvas5.invalidAnswer = incorrectInvalidAnswer; 
+canvas5.name = "canvas5";
+canvas5.validityAnswerPlace = "'validityAnswer5'";
+
+
+
+
+
+</script>
+
+
+
+<div class="syllogism">
+			 <div class= "canvasBlock">
+				<canvas id ="myCanvas6">
+				  <p>If you're seeing this text, it's because your browser doesn't support the html canvas tool, which was used to produce the graphics required for the exercise.</p>
+				</canvas>
+			</div class = "canvasBlock"> 
+			
+			<div class="instructionsBlock" > 
+			
+			<p id="area"> </p> 
+			<ol> <li> No devil-fruit eaters are good swimmers.</li> 
+			     <li> All Whitebeard Pirates are devil-fruit eaters.</li> 
+				 <li> Therefore, no Whitebeard Pirates are good swimmers.</li> 
+				 </ol> 
+			
+			<button type = "button" onclick = "context6.reset()">Reset</button>
+			<button type = "button" onclick = "check(currentState6, correctState6, 'checkDiagramAnswer6', 'validAppear6', 'invalidAppear6', canvas6)">Check the Diagram</button>
+			
+			
+			
+
+			<p id = "checkDiagramAnswer6"> </p>
+			
+			<p> <span id = "validAppear6"> </span><span id = "invalidAppear6"> </span> </p>
+			
+			<p id = "validityAnswer6"> </p>
+		
+			
+		
+			</div class = "instructionsBlock"> 
+			
+	</div class = "syllogism">
+	
+
+	
+<script>
+
+
+
+const initialState6 = new initialState();
+var currentState6 = new currentState();
+
+const canvas6 = new canvasMetaObject('#myCanvas6');
+const context6 = new canvasContext(canvas6, currentState6, "WP", "GS", "DF", 'checkDiagramAnswer6', 'validAppear6', 'invalidAppear6', 'validityAnswer6');
+context6.drawChalkboard();
+context6.setShade();
+
+const shader6 = new shader(canvas6, context6);
+const xer6 = new xer(canvas6, context6);
+const toggleSwitch6 = new toggleSwitch(canvas6, context6);
+
+
+const correctState6 = {
+
+			oneShaded: false,
+			twoShaded: false,
+			threeShaded: true,
+			fourShaded: true,
+			fiveShaded: true,
+			sixShaded: true,
+			sevenShaded: false,
+			xes: false,
+			xinone: false, 
+			xintwo: false, 
+			xinthree: false, 
+			xinfour: false, 
+			xinfive: false, 
+			xinsix: false, 
+			xinseven: false,
+			xOneTwo: false,
+			xTwoThree: false, 
+			xThreeFour: false,
+			xFiveSix: false,
+			xSixSeven: false,
+			xTwoFive: false,
+			xThreeSix: false,
+			xFourSeven: false,
+			xOneFour: false,
+			xRandom: false
+
+};
+
+
+canvas6.validAnswer = correctValidAnswer; 
+canvas6.invalidAnswer = incorrectInvalidAnswer; 
+canvas6.name = "canvas6";
+canvas6.validityAnswerPlace = "'validityAnswer6'";
+
+
+
+
+
+</script>
+
+	</div class = "wrapper">	
+	</div class = "container"> 
+	
+	</body>
+	</html> 
