@@ -48,7 +48,8 @@
 			</div class = "canvasBlock"> 
 			
 			<div class="instructionsBlock" > 
-			
+			<h4> Syllogism 1 </h4>
+	
 			<p id="area">  </p> 
 			<ol> <li> No horses are zebras.</li> 
 			     <li> Some mares are zebras.</li> 
@@ -305,35 +306,6 @@ function isEquivalent(a, b) {
 };
 
 
-//the function i defined about seems to work for checking if the objects have the same values for each property. The reason I think this is so is that, when I tell it to report in the html whether the objects are equivalent, it gives appropriate responses. But it seems like the function inside the object constructor can't "see" that function. The object's method is not responding at all when and only when that function is called within the condition clause. 
- 
- /*There's actually no reason to use a constructor here. One function will do for all the diagrams. You just plug in different values in the button. You have to make all the buttons different anyhow.
-function answerChecker(currentState, initialState, responsePlace) {
-	this.check = function(currentState, initialState, responsePlace) {
-	
-	
-	if (isEquivalent(currentState, initialState)) {
-		
-		document.getElementById(responsePlace).innerHTML = "yes";
-		
-		}
-		
-		
-	
-	};
-
-};
-
-var answerChecker1 = new answerChecker(currentState1, initialState1, 'checkDiagramAnswer1') */
-
-
-/*canvas1.prototype.validAnswer = function() {
-	document.getElementById("validityAnswer1").innerHTML = correctValidAnswer;
-	};*/
-
-/*canvasMetaObject.prototype.invalidAnswer = function() {
-	document.getElementById("validityAnswer1").innerHTML = "incorrect";
-}*/
 
 
 canvas1.validAnswer = correctValidAnswer;
@@ -351,8 +323,6 @@ function check(currentState, correctState, responsePlace, validAppear, invalidAp
 		
 		if(isEquivalent(currentState, correctState)){
 		
-		//var object = canvasMetaObject;
-		//var place = validityAnswerPlace;
 		
 		document.getElementById(responsePlace).innerHTML = "Good job! Your diagram is correct. Now, is the syllogism valid or invalid?";
 		document.getElementById(validAppear).innerHTML = '<button onclick = "responseToValid(' + canvasMetaObject.validityAnswerPlace + ',' + canvasMetaObject.name + ')" > Valid </button>';
@@ -619,8 +589,8 @@ function canvasContext(canvasMetaObject, currentState, minorLetter, majorLetter,
 			this.ctx.font = "22px arial";
 			this.ctx.fillStyle = 'red';
 			this.ctx.fillText("X", major.x + 1.1*radius * Math.cos(degToRad(160)), major.y + 1.1*radius * Math.sin(degToRad(160)));
-			xFiveSix = true;
-			xes = true;
+			currentState.xFiveSix = true;
+			currantState.xes = true;
 	}; 
 
 	this.x6t7 = function() {
@@ -983,7 +953,7 @@ const toggleSwitch1 = new toggleSwitch(canvas1, context1);
 			</div class = "canvasBlock"> 
 			
 			<div class="instructionsBlock" > 
-			
+			<h4> Syllogism 2</h4>
 			<p id="area">  </p> 
 			<ol> <li> No eukaryotes are prokaryotes.</li> 
 			     <li> Some archaea are prokaryotes.</li> 
@@ -1077,7 +1047,7 @@ canvas2.validityAnswerPlace = "'validityAnswer2'";
 			</div class = "canvasBlock"> 
 			
 			<div class="instructionsBlock" > 
-			
+			<h4> Syllogism 3</h4>
 			<p id="area"> </p> 
 			<ol> <li> Some tigers are meat eaters.</li> 
 			     <li> Some tigers are striped animals.</li> 
@@ -1171,7 +1141,7 @@ canvas3.validityAnswerPlace = "'validityAnswer3'";
 			</div class = "canvasBlock"> 
 			
 			<div class="instructionsBlock" > 
-			
+			<h4> Syllogism 4</h4>
 			<p id="area"> </p> 
 			<ol> <li> Some people who never have to work on a Sunday unless their boss calls them Saturday are people who raise chickens in their back yard without a farming permit.</li> 
 			     <li> Some people who never have to work on a Sunday unless their boss calls them Saturday are people who have a bad sense of direction but manage to get around using maps.</li> 
@@ -1265,7 +1235,7 @@ canvas4.validityAnswerPlace = "'validityAnswer4'";
 			</div class = "canvasBlock"> 
 			
 			<div class="instructionsBlock" > 
-			
+			<h4> Syllogism 5</h4>
 			<p id="area"> </p> 
 			<ol> <li> Some genin are shinobi.</li> 
 			     <li> All shinobi are ninjas.</li> 
@@ -1361,7 +1331,7 @@ canvas5.validityAnswerPlace = "'validityAnswer5'";
 			</div class = "canvasBlock"> 
 			
 			<div class="instructionsBlock" > 
-			
+			<h4> Syllogism 6</h4>
 			<p id="area"> </p> 
 			<ol> <li> No devil-fruit eaters are good swimmers.</li> 
 			     <li> All Whitebeard Pirates are devil-fruit eaters.</li> 
@@ -1440,6 +1410,197 @@ canvas6.validAnswer = correctValidAnswer;
 canvas6.invalidAnswer = incorrectInvalidAnswer; 
 canvas6.name = "canvas6";
 canvas6.validityAnswerPlace = "'validityAnswer6'";
+
+
+
+
+
+</script>
+
+
+<div class="syllogism">
+			 <div class= "canvasBlock">
+				<canvas id ="myCanvas7">
+				  <p>If you're seeing this text, it's because your browser doesn't support the html canvas tool, which was used to produce the graphics required for the exercise.</p>
+				</canvas>
+			</div class = "canvasBlock"> 
+			
+			<div class="instructionsBlock" > 
+			<h4> Syllogism 7</h4>
+			<p id="area"> </p> 
+			<ol> <li> Some shadow clones are not mindless servants.</li> 
+			     <li> Some puppets are not mindless servants.</li> 
+				 <li> Therefore, some puppets are shadow clones.</li> 
+				 </ol> 
+			
+			<button type = "button" onclick = "context7.reset()">Reset</button>
+			<button type = "button" onclick = "check(currentState7, correctState7, 'checkDiagramAnswer7', 'validAppear7', 'invalidAppear7', canvas7)">Check the Diagram</button>
+			
+			
+			
+
+			<p id = "checkDiagramAnswer7"> </p>
+			
+			<p> <span id = "validAppear7"> </span><span id = "invalidAppear7"> </span> </p>
+			
+			<p id = "validityAnswer7"> </p>
+		
+			
+		
+			</div class = "instructionsBlock"> 
+			
+	</div class = "syllogism">
+	
+
+	
+<script>
+
+
+
+const initialState7 = new initialState();
+var currentState7 = new currentState();
+
+const canvas7 = new canvasMetaObject('#myCanvas7');
+const context7 = new canvasContext(canvas7, currentState7, "P", "SC", "MS", 'checkDiagramAnswer7', 'validAppear7', 'invalidAppear7', 'validityAnswer7');
+context7.drawChalkboard();
+context7.setShade();
+
+const shader7 = new shader(canvas7, context7);
+const xer7 = new xer(canvas7, context7);
+const toggleSwitch7 = new toggleSwitch(canvas7, context7);
+
+
+const correctState7 = {
+
+			oneShaded: false,
+			twoShaded: false,
+			threeShaded: false,
+			fourShaded: false,
+			fiveShaded: false,
+			sixShaded: false,
+			sevenShaded: false,
+			
+			xes: true,
+			xinone: false, 
+			xintwo: false, 
+			xinthree: false, 
+			xinfour: false, 
+			xinfive: false, 
+			xinsix: false, 
+			xinseven: false,
+			xOneTwo: false,
+			xTwoThree: false, 
+			xThreeFour: false,
+			xFiveSix: true,
+			xSixSeven: true,
+			xTwoFive: false,
+			xThreeSix: false,
+			xFourSeven: false,
+			xOneFour: false,
+			xRandom: false
+
+};
+
+
+canvas7.validAnswer = incorrectValidAnswer; 
+canvas7.invalidAnswer = correctInvalidAnswer; 
+canvas7.name = "canvas7";
+canvas7.validityAnswerPlace = "'validityAnswer7'";
+
+
+
+
+
+</script>
+
+<div class="syllogism">
+			 <div class= "canvasBlock">
+				<canvas id ="myCanvas8">
+				  <p>If you're seeing this text, it's because your browser doesn't support the html canvas tool, which was used to produce the graphics required for the exercise.</p>
+				</canvas>
+			</div class = "canvasBlock"> 
+			
+			<div class="instructionsBlock" > 
+			<h4> Syllogism 8</h4>
+			<p id="area"> </p> 
+			<ol> <li> All pirates are thieves.</li> 
+			     <li> Some ninjas are not thieves.</li> 
+				 <li> Therefore, some ninjas are not pirates.</li> 
+				 </ol> 
+			
+			<button type = "button" onclick = "context8.reset()">Reset</button>
+			<button type = "button" onclick = "check(currentState8, correctState8, 'checkDiagramAnswer8', 'validAppear8', 'invalidAppear8', canvas8)">Check the Diagram</button>
+			
+			
+			
+
+			<p id = "checkDiagramAnswer8"> </p>
+			
+			<p> <span id = "validAppear8"> </span><span id = "invalidAppear8"> </span> </p>
+			
+			<p id = "validityAnswer8"> </p>
+		
+			
+		
+			</div class = "instructionsBlock"> 
+			
+	</div class = "syllogism">
+	
+
+	
+<script>
+
+
+
+const initialState8 = new initialState();
+var currentState8 = new currentState();
+
+const canvas8 = new canvasMetaObject('#myCanvas8');
+const context8 = new canvasContext(canvas8, currentState8, "N", "P", "T", 'checkDiagramAnswer8', 'validAppear8', 'invalidAppear8', 'validityAnswer8');
+context8.drawChalkboard();
+context8.setShade();
+
+const shader8 = new shader(canvas8, context8);
+const xer8 = new xer(canvas8, context8);
+const toggleSwitch8 = new toggleSwitch(canvas8, context8);
+
+
+const correctState8 = {
+
+			oneShaded: false,
+			twoShaded: false,
+			threeShaded: false,
+			fourShaded: false,
+			fiveShaded: false,
+			sixShaded: true,
+			sevenShaded: true,
+			
+			xes: true,
+			xinone: false, 
+			xintwo: false, 
+			xinthree: false, 
+			xinfour: false, 
+			xinfive: true, 
+			xinsix: false, 
+			xinseven: false,
+			xOneTwo: false,
+			xTwoThree: false, 
+			xThreeFour: false,
+			xFiveSix: false,
+			xSixSeven: false,
+			xTwoFive: false,
+			xThreeSix: false,
+			xFourSeven: false,
+			xOneFour: false,
+			xRandom: false
+
+};
+
+
+canvas8.validAnswer = correctValidAnswer; 
+canvas8.invalidAnswer = incorrectInvalidAnswer; 
+canvas8.name = "canvas8";
+canvas8.validityAnswerPlace = "'validityAnswer8'";
 
 
 
